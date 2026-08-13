@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0C0018">
+
+<!-- Athena no envía datos a ningún servidor. La política lo hace cumplir:
+     connect-src 'none' impide cualquier fetch, XHR o WebSocket. -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self' https://cdn.jsdelivr.net;
+  style-src 'self' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: blob:;
+  media-src 'self' blob:;
+  connect-src 'none';
+  form-action 'none';
+  base-uri 'none';
+">
+
+<title>Athena · Verifica un código QR antes de abrirlo</title>
+<meta name="description" content="Athena analiza el contenido de un código QR y te dice si el destino es seguro, sospechoso o peligroso. Todo ocurre en tu dispositivo: nada se envía a internet.">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/athena-256.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<a class="salto" href="#principal">Ir al contenido</a>
+
+<header class="cabecera">
+  <div class="marca">
+    <img class="marca__yelmo" src="assets/athena.png" alt="" width="40" height="40">
+    <div class="marca__texto">
+      <span class="marca__nombre">ATHENA</span>
+      <span class="marca__lema">Guardia de códigos QR</span>
+    </div>
+  </div>
+</header>
+
+<main id="principal" class="lienzo">
+
+  <section class="tesis">
+    <h1 class="tesis__titulo">Un código QR no muestra a dónde te lleva.</h1>
+    <p class="tesis__cuerpo">
+      Apunta la cámara o sube la imagen. Athena descifra el código, examina el destino
+      carácter por carácter y te dice qué encontró <strong>antes</strong> de que lo abras.
+    </p>
+  </section>
+
+  <div class="tablero">
+
+    <!-- Columna de captura -->
+    <section class="captura" aria-label="Captura del código">
+      <div id="visor" class="visor" data-estado="inactiva">
+        <video id="video" playsinline muted autoplay disablepictureinpicture></video>
+        <div class="visor__reticula" aria-hidden="true">
+          <span class="esq esq--si"></span><span class="esq esq--sd"></span>
+          <span class="esq esq--ii"></span><span class="esq esq--id"></span>
+          <span class="visor__barrido"></span>
+        </div>
+        <p class="visor__reposo">
+          <span class="visor__glifo" aria-hidden="true">◈</span>
+          Cámara apagada.<br>También puedes arrastrar o pegar una imagen aquí.
+        </p>
+      </div>
+
+      <div class="mandos">
+        <button id="btnCamara" type="button" class="btn btn--primario" aria-pressed="false">
+          <span class="rotulo">Activar cámara</span>
+        </button>
+        <button id="btnArchivo" type="button" class="btn btn--secundario">
+          <span class="rotulo">Subir imagen</span>
+        </button>
+        <input id="inputArchivo" type="file" accept="image/*" hidden>
+      </div>
+
+      <p id="aviso" class="aviso" role="alert" hidden></p>
+      <p id="motor" class="nota"></p>
+    </section>
+
+    <!-- Columna de informe -->
+    <section class="informe" aria-label="Resultado del análisis">
+
+      <div id="vacio" class="vacio">
+        <p class="vacio__titulo">Sin lectura todavía</p>
+        <p class="vacio__cuerpo">
+          El informe aparecerá aquí: veredicto, contenido descifrado y cada señal
+          que Athena haya encontrado, con su explicación.
+        </p>
+      </div>
+
+      <article id="resultado" class="resultado" tabindex="-1" aria-live="polite" hidden>
+
+        <div id="veredicto" class="veredicto" data-nivel="seguro">
+          <span id="veredictoSimbolo" class="veredicto__simbolo" aria-hidden="true">◈</span>
+          <div>
+            <p id="veredictoTipo" class="veredicto__tipo">Enlace web</p>
+            <h2 id="veredictoTitulo" class="veredicto__titulo">Sin señales de riesgo</h2>
+          </div>
+        </div>
+
+        <div class="medidor">
+          <div id="medidorBarra" class="medidor__pista" role="meter"
+               aria-labelledby="medidorValor" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+          <p id="medidorValor" class="medidor__valor">Ninguna señal detectada</p>
+        </div>
+
+        <h3 class="rubro">Contenido descifrado</h3>
+        <p class="rubro__pie">En dorado, el dominio que realmente manda. En color, cada carácter que motivó una alerta.</p>
+        <pre id="lectura" class="lectura"></pre>
+        <div id="leyenda" class="leyenda" hidden></div>
+
+        <h3 class="rubro">Qué encontró Athena</h3>
+        <ul id="hallazgos" class="hallazgos"></ul>
+
+        <div id="acciones" class="acciones">
+          <button id="btnCopiar" type="button" class="btn btn--secundario btn--menudo">
+            <span class="rotulo">Copiar contenido</span>
+          </button>
+          <button id="btnAbrir" type="button" class="btn btn--secundario btn--menudo" hidden>
+            <span class="rotulo">Abrir enlace</span>
+          </button>
+          <button id="btnNuevo" type="button" class="btn btn--fantasma btn--menudo">
+            <span class="rotulo">Nueva lectura</span>
+          </button>
+        </div>
+      </article>
+
+      <section id="historial" class="historial" aria-label="Lecturas de esta sesión" hidden>
+        <h3 class="rubro">Esta sesión</h3>
+        <ul id="listaHistorial" class="historial__lista"></ul>
+        <p class="nota">Se guarda solo en memoria. Al cerrar la pestaña desaparece.</p>
+      </section>
+    </section>
+  </div>
+
+  <section class="pilares" aria-label="Cómo funciona Athena">
+    <article class="pilar">
+      <h3 class="pilar__titulo">Nada sale de tu equipo</h3>
+      <p>La imagen se procesa en el navegador. Athena no tiene servidor al que enviar tus escaneos, y la política de seguridad de la página bloquea toda conexión de red.</p>
+    </article>
+    <article class="pilar">
+      <h3 class="pilar__titulo">Te enseña dónde mirar</h3>
+      <p>En vez de un semáforo, Athena señala el carácter exacto que delata el engaño: una letra cirílica, un símbolo @, un dominio parecido al de tu banco.</p>
+    </article>
+    <article class="pilar">
+      <h3 class="pilar__titulo">Nunca abre por ti</h3>
+      <p>Ningún destino se carga automáticamente. Si el veredicto es de peligro, abrir requiere una confirmación explícita de tu parte.</p>
+    </article>
+  </section>
+
+  <section class="limites" aria-label="Alcance del análisis">
+    <h2 class="rubro">Lo que Athena no puede hacer</h2>
+    <p>
+      El análisis es estático: examina el texto del código, no el sitio de destino. Un dominio
+      recién registrado sin errores de escritura, o un enlace acortado, pueden pasar como
+      seguros. Un veredicto limpio significa «no encontré señales conocidas», no «es
+      confiable». Ante cualquier petición de contraseñas o datos bancarios, escribe la
+      dirección tú mismo en el navegador.
+    </p>
+  </section>
+
+  <section id="contacto" class="contacto">
+    <h2 class="rubro">Contacto</h2>
+    <p><a class="enlace" href="mailto:moonl4b@outlook.com">moonl4b@outlook.com</a></p>
+    <p><a class="enlace" href="https://github.com/mob949k/MOONLAB/blob/main/README.md"
+          target="_blank" rel="noopener noreferrer">Términos y condiciones</a></p>
+  </section>
+</main>
+
+<footer class="pie">
+  <p>Athena · © 2026 · Análisis local, sin telemetría</p>
+</footer>
+
+<!--
+  jsQR es el motor de respaldo cuando el navegador no expone BarcodeDetector.
+  ANTES DE PUBLICAR: genera el hash y añade integrity="sha384-…"
+      curl -sL https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js | openssl dgst -sha384 -binary | openssl base64 -A
+  Mejor aún: descarga el archivo a vendor/jsQR.js y sirve desde tu propio dominio.
+-->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" crossorigin="anonymous"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

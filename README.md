@@ -1,40 +1,91 @@
 <p align="right">
-  <img src="https://raw.githubusercontent.com/mob949k/MOONLAB/main/moonlab.png" alt="MOONLAB Logo" width="100"/>
+  <img src="https://raw.githubusercontent.com/mob949k/QR-Scanner/main/athena.png" alt="Athena logo" width="100"/>
 </p>
 
-# Términos y Condiciones - MOONLAB  
-**Última actualización:** 15 de junio de 2025
+# Terms and Conditions — Athena
 
-## 1. Aceptación de los Términos y Condiciones
-Al acceder y utilizar el sitio web **MOONLAB**, usted acepta cumplir de forma íntegra y sin reservas con los presentes términos y condiciones. Si no está de acuerdo con alguna de las disposiciones aquí descritas, debe abstenerse de utilizar el sitio. Su uso continuo del sitio será considerado como aceptación expresa de estos términos.
+**Last updated:** August 13, 2026
 
-## 2. Finalidad del Servicio
-**MOONLAB** proporciona una herramienta en línea para el análisis y detección de posibles amenazas digitales contenidas en códigos QR. El propósito del sitio es estrictamente informativo y educativo, con el fin de concienciar a los usuarios sobre los riesgos de seguridad informática relacionados con el uso de códigos QR.
+---
 
-## 3. Limitación de Responsabilidad
-MOONLAB no garantiza la precisión absoluta del análisis de los códigos QR, ni asume responsabilidad por decisiones que los usuarios tomen basándose en los resultados proporcionados. El uso del sitio es bajo su propio riesgo. No nos responsabilizamos por pérdidas, daños o consecuencias derivadas directa o indirectamente del uso de nuestro servicio.
+## 1. Acceptance of These Terms
 
-## 4. Conducta del Usuario
-Al utilizar MOONLAB, usted se compromete a:
-- No utilizar el sitio para fines ilegales, maliciosos o en violación de normativas locales o internacionales.
-- No realizar pruebas con contenido que viole derechos de propiedad intelectual o que sea considerado confidencial o privado sin el debido consentimiento.
-- No intentar vulnerar la seguridad, integridad o disponibilidad del servicio.
+By accessing or using the **Athena** website, you agree to be bound by these Terms and Conditions in full. If you do not agree with any provision described here, please do not use the site. Continued use of Athena constitutes express acceptance of these terms.
 
-## 5. Propiedad Intelectual
-El contenido, diseño, código fuente y funcionalidades de **MOONLAB** son propiedad exclusiva del equipo de desarrollo del proyecto, salvo que se indique lo contrario. Está prohibida la copia, modificación o distribución no autorizada de cualquier parte del sitio.
+## 2. Purpose of the Service
 
-## 6. Cambios en los Términos
-Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento sin previo aviso. Recomendamos revisar esta sección periódicamente. El uso continuado del sitio después de cualquier cambio implica su aceptación expresa de los términos actualizados.
+**Athena** is an online tool that analyses the contents of QR codes and reports indicators of possible digital threats. Its purpose is strictly **informational and educational**: to help people understand the security risks associated with QR codes and to recognise the techniques used to disguise a malicious destination.
 
-## 7. Disponibilidad del Servicio
-Aunque se realiza un esfuerzo razonable por mantener la disponibilidad del sitio, no garantizamos que el servicio esté libre de interrupciones, errores o fallos técnicos. Nos reservamos el derecho de suspender o limitar el acceso a MOONLAB en cualquier momento y por cualquier motivo.
+Athena is a decision aid, not an authority. It does not certify that any website, network, or payment request is legitimate.
 
-## 8. Política de Privacidad
-La recopilación y tratamiento de los datos personales, si los hubiera, se realiza de acuerdo con nuestra [Política de Privacidad](#). No almacenamos ni compartimos los códigos QR escaneados ni los resultados generados con terceros, salvo requerimiento legal.
+## 3. Privacy and Data Processing
 
-## 9. Jurisdicción y Legislación Aplicable
-Estos términos y condiciones se regirán e interpretarán de acuerdo con las leyes de la República de Panamá. Cualquier controversia derivada de su uso se someterá a la jurisdicción de los tribunales competentes de dicha jurisdicción.
+Athena has **no server, no user accounts, and no analytics**.
 
-## 10. Contacto
-Para consultas o notificaciones relacionadas con estos términos, puede contactarnos en:  
-**Correo electrónico:** moonl4b@outlook.com
+- Every QR code you scan or upload is decoded and analysed **entirely within your browser**, on your own device.
+- The contents of scanned codes are **never transmitted** anywhere. There is no backend to receive them.
+- Scan history is held **in memory only** and is discarded the moment you close the tab. Nothing is written to your device's storage.
+- Because no scan data is ever collected or retained, there is nothing that could be disclosed to any third party — including in response to a legal request. The absence of data is enforced by the site's Content Security Policy, which blocks all outbound network requests from the application.
+
+Athena does not use cookies, tracking pixels, or advertising of any kind.
+
+## 4. Camera and Image Access
+
+Athena may request permission to use your device camera. If you grant it:
+
+- The video stream is processed **locally**, frame by frame, solely to locate and decode a QR code.
+- No frame, photograph, or recording is stored or transmitted.
+- The camera is released automatically when you stop the scan, switch away from the tab, or close the page.
+
+You may deny or revoke this permission at any time in your browser settings. Athena remains fully usable by uploading, dragging, or pasting an image instead.
+
+## 5. Limitation of Liability
+
+Athena's analysis is **static**: it examines the text encoded in a QR code and never visits, resolves, or fetches the destination. This imposes real limits that you should understand before relying on a result:
+
+- A **"No risk signals"** verdict means *no known indicators were found*. It does not mean the destination is safe or trustworthy. A newly registered domain with a plausible name, valid HTTPS, and no typographical tricks will pass a static check.
+- **Shortened links cannot be verified.** Their real destination is hidden behind a redirect and can be changed after the code is printed.
+- **A valid integrity checksum on a payment code confirms only that the code has not been altered since it was generated.** A fraudulent sticker placed over a legitimate code carries its own correct checksum.
+
+Athena is provided "as is", without warranty of any kind. You use it at your own risk. We accept no liability for any loss, damage, or consequence arising directly or indirectly from the use of the service or from decisions made on the basis of its results.
+
+Whenever a destination asks for passwords, banking details, or payment confirmation, verify it through a channel you already trust rather than relying on any automated tool.
+
+## 6. Acceptable Use
+
+By using Athena, you agree that you will not:
+
+- Use the service for unlawful or malicious purposes, or in breach of any applicable local or international regulation.
+- Submit content that infringes intellectual property rights, or that is confidential or private, without the appropriate consent.
+- Attempt to compromise the security, integrity, or availability of the service, or to circumvent its protections.
+- Present Athena's output as a professional security certification or as a guarantee of safety to third parties.
+
+## 7. Third-Party Components
+
+Athena's interface loads a small number of resources from third-party content delivery networks: web fonts, and a fallback QR decoding library used when the browser does not provide a native decoder. These requests reveal your IP address to those providers under their own privacy policies.
+
+**The contents of your scanned codes are never included in these requests.** They occur when the page loads and are unrelated to any scan you perform.
+
+## 8. Intellectual Property
+
+The content, design, source code, and functionality of **Athena** are the property of the project's development team, except where otherwise indicated. Third-party components remain subject to their respective licences.
+
+No part of the site may be copied, modified, or redistributed without authorisation, except as expressly permitted by a licence file published in this repository.
+
+## 9. Service Availability
+
+Reasonable effort is made to keep the site available, but we do not warrant that the service will be uninterrupted, error-free, or free of technical faults. We reserve the right to suspend, limit, or discontinue access to Athena at any time and for any reason, without notice.
+
+## 10. Changes to These Terms
+
+We reserve the right to modify these Terms and Conditions at any time. The date at the top of this document reflects the most recent revision. Continued use of the site after any change constitutes acceptance of the updated terms.
+
+## 11. Governing Law and Jurisdiction
+
+These Terms and Conditions are governed by and construed in accordance with the laws of the **Republic of Panama**. Any dispute arising from the use of the service shall be submitted to the competent courts of that jurisdiction.
+
+## 12. Contact
+
+For enquiries or notices relating to these terms:
+
+**Email:** moonl4b@outlook.com
